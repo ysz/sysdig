@@ -500,12 +500,13 @@ if(NOT WIN32 AND NOT APPLE)
                         BUILD_BYPRODUCTS ${PROTOC} ${PROTOBUF_INCLUDE} ${PROTOBUF_LIB}
                         INSTALL_COMMAND make install)
                 else()
+			set(cxx_flags "-O0 -g -DDEBUG")
                         ExternalProject_Add(protobuf
                         DEPENDS openssl zlib
                         URL "https://github.com/protocolbuffers/protobuf/releases/download/v3.8.0/protobuf-cpp-3.8.0.tar.gz"
                         URL_MD5 "9054bb5571905a28b3ae787d1d6cf8de"
                         # TODO what if using system zlib?
-                        CONFIGURE_COMMAND /usr/bin/env CPPFLAGS=-I${ZLIB_INCLUDE} LDFLAGS=-L${ZLIB_SRC} ./configure --with-zlib --prefix=${PROTOBUF_SRC}/target
+                        CONFIGURE_COMMAND /usr/bin/env CPPFLAGS=-I{ZLIB_INCLUDE} LDFLAGS=-L${ZLIB_SRC} CXXFLAGS=${cxx_flags} ./configure --with-zlib --prefix=${PROTOBUF_SRC}/target
                         BUILD_COMMAND ${CMD_MAKE}
                         BUILD_IN_SOURCE 1
                         BUILD_BYPRODUCTS ${PROTOC} ${PROTOBUF_INCLUDE} ${PROTOBUF_LIB}
